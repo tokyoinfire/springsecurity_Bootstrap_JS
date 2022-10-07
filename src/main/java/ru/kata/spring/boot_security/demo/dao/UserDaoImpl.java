@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public void save(User user) {
         em.persist(user);
     }
@@ -37,11 +39,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    @Transactional
     public void update(User user) {
         em.merge(user);
     }
 
     @Override
+    @Transactional
     public void delete(int id) {
         User user = em.find(User.class, id);
         em.remove(user);

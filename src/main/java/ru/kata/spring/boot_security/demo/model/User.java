@@ -22,7 +22,7 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
     @Column(name = "roles")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Role> roles;
 
     public int getId() {

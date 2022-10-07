@@ -11,39 +11,45 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-public class AdminControllerRest {
+@RequestMapping()
+public class ControllerRest {
 
     private UserService userService;
 
     @Autowired
-    public AdminControllerRest(UserService userService) {
+    public ControllerRest(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping()
+
+    @GetMapping("/rest")
+    public ResponseEntity<User> user(Principal principal) {
+        return new ResponseEntity<>(userService.findEmail(principal.getName()), HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
     public ResponseEntity<List<User>> allUsersRest() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/users/user")
     public ResponseEntity<User> navBar(Principal principal) {
         return new ResponseEntity<>(userService.findEmail(principal.getName()), HttpStatus.OK);
     }
 
-    @PutMapping()
+    @PutMapping("/users")
     public ResponseEntity<User> update(@RequestBody User user) {
         userService.update(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<Integer> delete(@PathVariable("id") int id) {
         userService.delete(id);
         return new ResponseEntity<>(id, HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping()
+    @PostMapping("/users")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
